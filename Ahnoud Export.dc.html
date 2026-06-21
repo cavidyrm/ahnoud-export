@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  :root{
+    --accent:#b06a3f;--font-display:'Helvetica Neue',Helvetica,Arial,sans-serif;--font-body:'Helvetica Neue',Helvetica,Arial,sans-serif;--font-mono:'JetBrains Mono',monospace;--font-ui:'Plus Jakarta Sans',sans-serif;
+    --surf:#fff;--surf2:#fafafa;--page:#fff;
+    --ink:#1a1a1a;--ink2:#33312d;--ink3:#44413c;--ink4:#55524c;--ink5:#6b675f;
+    --mut:#7a766e;--mut2:#8a8780;--mut3:#9a968e;--faint:#b0aca3;
+    --line:#eceae5;--line2:#efedea;--hair:#e2dfd9;--stripe:#e9e7e2;
+    --bd:#d4d1cb;--bd2:#d8d4cc;--bd3:#dcd8d0;--bd4:#ddd9d2;
+    --fill:#f7f6f4;--fill2:#f3f1ee;--warm:#fdf6f4;
+    --card:rgba(255,255,255,0.95);
+    --solid:#1a1a1a;--on-solid:#fff;
+    --radius:8px;--radius-sm:calc(var(--radius) * 0.5);
+  }
+  #ae-root[data-theme="dark"]{
+    --surf:#1b1a17;--surf2:#161512;--page:#0e0d0b;
+    --ink:#f3efe8;--ink2:#dad5cb;--ink3:#c8c3b9;--ink4:#aca69c;--ink5:#9a948b;
+    --mut:#8c877d;--mut2:#928d83;--mut3:#827d74;--faint:#6e6960;
+    --line:#2a2825;--line2:#2a2825;--hair:#2c2a26;--stripe:#201f1c;
+    --bd:rgba(255,255,255,.17);--bd2:rgba(255,255,255,.15);--bd3:rgba(255,255,255,.12);--bd4:rgba(255,255,255,.12);
+    --fill:#191815;--fill2:#191815;--warm:#241a17;
+    --card:rgba(28,27,23,0.86);
+    --solid:#f3efe8;--on-solid:#1a1a1a;
+  }
+  body{font-family:var(--font-body);-webkit-font-smoothing:antialiased;color:var(--ink);background:var(--page)}
+  #ae-root{background:var(--page);color:var(--ink);transition:background .35s ease,color .35s ease}
+  h1,h2,h3{font-family:var(--font-display)}
+  .mono{font-family:'Manrope','Plus Jakarta Sans',sans-serif}
+  ::selection{background:var(--solid);color:var(--on-solid)}
+  input,textarea,select,button{font-family:inherit}
+  a{color:inherit;text-decoration:none}
+  section[id], footer[id]{scroll-margin-top:24px}
+  @keyframes pulsering{0%{transform:scale(1);opacity:0.55}70%{transform:scale(3.2);opacity:0}100%{opacity:0}}
+  @keyframes dashmove{to{stroke-dashoffset:-100}}
+  .navlink{position:relative;color:var(--ink4);transition:color .2s}
+  .aenav{font-family:var(--font-ui);font-size:13.5px;font-weight:500;color:#928d83;padding:10px 14px;border-radius:11px;transition:background .15s,color .15s;cursor:pointer}
+  .aenav:hover{color:var(--accent);background:rgba(255,255,255,0.07)}
+  #ae-root[data-theme="dark"] .aenav:hover{color:color-mix(in oklab, var(--accent) 65%, #ffffff)}
+  .ae-worldmap{filter:brightness(0) opacity(0.82)}
+  #ae-root[data-theme="dark"] .ae-worldmap{filter:brightness(0) invert(1) opacity(0.9)}
+  .navlink:hover{color:var(--ink)}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  .flink{color:#d2ccc2;transition:color .2s}
+  .flink:hover{color:color-mix(in oklab, var(--accent) 65%, #ffffff)}
+  .fdim{color:#9a948b;transition:color .2s}
+  .fdim:hover{color:color-mix(in oklab, var(--accent) 65%, #ffffff)}
+  .fsoc{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:var(--radius);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:#d2ccc2;transition:all .2s}
+  .fsoc:hover{background:var(--accent);border-color:var(--accent);color:var(--on-solid)}
+  .ae-statcell{background-color:var(--surf);background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-position:left center;background-size:0% 100%;padding:26px 28px;color:var(--ink);transition:background-size .5s cubic-bezier(.22,1,.36,1),color .35s ease}
+  .ae-statcell:hover{background-size:100% 100%;color:var(--on-solid)}
+  .ae-capcard{border:1px solid var(--line);border-radius:var(--radius);padding:28px;color:var(--ink);background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-position:left center;background-size:0% 100%;transition:background-size .5s cubic-bezier(.22,1,.36,1),color .35s ease,border-color .35s ease}
+  .ae-capcard:hover{background-size:100% 100%;color:var(--on-solid);border-color:var(--accent)}
+  .ae-regioncard{flex:1;border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;color:var(--ink);background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-position:left center;background-size:0% 100%;transition:background-size .5s cubic-bezier(.22,1,.36,1),color .35s ease,border-color .35s ease}
+  .ae-regioncard:hover{background-size:100% 100%;color:var(--on-solid);border-color:var(--accent)}
+  /* button micro-interactions */
+  .ae-btn{transition:transform .28s cubic-bezier(.16,1,.3,1),box-shadow .28s cubic-bezier(.16,1,.3,1),filter .2s ease,background .2s ease}
+  .ae-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,0,0,0.17);filter:brightness(1.05)}
+  .ae-btn:active{transform:translateY(0) scale(0.98)}
+  .ae-arrow{display:inline-block;transition:transform .28s cubic-bezier(.16,1,.3,1)}
+  .ae-btn:hover .ae-arrow{transform:translateX(5px)}
+  /* why-us grid micro-interactions */
+  .ae-g4 > div{transition:background .4s ease}
+  .ae-g4 > div:hover{background:color-mix(in oklab, var(--accent) 7%, var(--surf))}
+  .ae-g4 > div > .mono{transition:transform .4s cubic-bezier(.16,1,.3,1)}
+  .ae-g4 > div:hover > .mono{transform:translateY(-4px)}
+  /* quality cert cards micro-interactions */
+  .ae-dark .ae-g3 > div{transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s ease}
+  .ae-dark .ae-g3 > div:hover{transform:translateY(-5px);border-color:var(--accent)}
+  .ae-dark .ae-g3 > div > div:first-child{transition:border-color .35s ease,background .35s ease}
+  .ae-dark .ae-g3 > div:hover > div:first-child{border-color:var(--accent);background:var(--accent)}
+  /* division detail chips */
+  .ae-chip{transition:background .25s ease,transform .25s cubic-bezier(.16,1,.3,1)}
+  .ae-chip:hover{background:color-mix(in oklab, var(--accent) 12%, var(--fill));transform:translateX(3px)}
+  .ae-chip > div:first-child{transition:transform .25s cubic-bezier(.16,1,.3,1)}
+  .ae-chip:hover > div:first-child{transform:scale(1.5)}
+  @container (max-width:900px){
+    .ae-container{padding-left:28px !important;padding-right:28px !important}
+    .ae-g4{grid-template-columns:1fr 1fr !important}
+    .ae-g3{grid-template-columns:1fr 1fr !important}
+    .ae-cap{grid-template-columns:1fr 1fr !important}
+    .ae-stat{grid-template-columns:1fr 1fr !important}
+    .ae-split{grid-template-columns:1fr !important}
+    .ae-g2{grid-template-columns:1fr !important}
+    .ae-foot{grid-template-columns:1fr 1fr !important}
+    .ae-flow{grid-template-columns:1fr 1fr 1fr !important;gap:30px 0 !important}
+    .ae-flow > div{border-left:none !important;padding-left:0 !important;padding-right:18px !important}
+    .h-hero{font-size:88px !important}
+    .h-sec{font-size:42px !important}
+    .h-cta{font-size:46px !important}
+    .ae-hero{height:auto !important;padding:30px 26px 34px !important}
+    .ae-hero-eyebrow,.ae-hero-title,.ae-hero-sub,.ae-hero-card,.ae-hero-cta{position:static !important;max-width:100% !important}
+    .ae-hero-title{margin:12px 0 0 !important}
+    .ae-hero-sub{margin:18px 0 0 !important}
+    .ae-hero-card{margin:24px 0 0 !important;width:100% !important;max-width:380px !important}
+    .ae-hero-cta{margin:24px 0 0 !important}
+    .ae-hero-imglabel{display:none !important}
+    .ae-hero-logo{display:none !important}
+    .ae-dark{padding:52px 34px !important}
+    .ae-ctaband{padding:64px 32px !important}
+    .ae-foot-top{display:grid !important;grid-template-columns:auto 1fr !important;align-items:flex-start !important;gap:56px 56px !important}
+    .ae-foot-top > div{text-align:left !important;align-items:flex-start !important;max-width:none !important}
+    .ae-foot-top > :nth-child(2){order:3 !important}
+    .ae-foot-top > :nth-child(3){order:2 !important}
+    .ae-foot-bleed{padding-bottom:128px !important}
+    .ae-foot-mid{grid-column:auto !important;order:4 !important;flex-direction:column !important;align-items:flex-start !important;justify-content:flex-start !important;gap:10px !important;margin-top:0 !important;align-self:start !important}
+  }
+  @container (max-width:560px){
+    .ae-navlinks{display:flex !important;flex:1 1 0 !important;min-width:0 !important;overflow-x:auto !important;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:2px !important;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%)}
+    .ae-foot-top{grid-template-columns:1fr !important;gap:32px !important}
+    .ae-foot-top > div{text-align:center !important;align-items:center !important}
+    .ae-foot-top > :nth-child(2){order:0 !important}
+    .ae-foot-top > :nth-child(3){order:0 !important}
+    .ae-foot-mid{grid-column:1/-1 !important;order:5 !important;flex-direction:row !important;justify-content:space-between !important;align-items:center !important;gap:16px !important;margin-top:14px !important}
+    .ae-navlinks::-webkit-scrollbar{display:none}
+    .aenav{flex:none}
+    .ae-navpill{width:calc(100cqw - 32px) !important}
+    .ae-navquote{flex:none !important;padding:12px 16px !important}
+    .ae-trust{flex-direction:column !important;align-items:flex-start !important;gap:18px !important}
+    .ae-trustitems{gap:14px 22px !important;flex:none !important;width:100% !important}
+    .ae-trustdiv{display:none !important}
+    .ae-container{padding-left:18px !important;padding-right:18px !important}
+    .ae-g4{grid-template-columns:1fr !important}
+    .ae-g3{grid-template-columns:1fr !important}
+    .ae-cap{grid-template-columns:1fr 1fr !important}
+    .ae-stat{grid-template-columns:1fr 1fr !important}
+    .ae-foot{grid-template-columns:1fr 1fr !important}
+    .ae-flow{grid-template-columns:1fr 1fr !important}
+    .ae-formrow{grid-template-columns:1fr !important}
+    .h-hero{font-size:54px !important}
+    .h-sec{font-size:31px !important}
+    .h-cta{font-size:32px !important}
+    .ae-sec{padding-top:64px !important}
+    .ae-herosec{padding-top:18px !important}
+    .ae-hero-cta{flex-direction:column !important;align-items:stretch !important}
+    .ae-hero-cta > *{text-align:center !important}
+    .ae-foot-bleed{margin-left:-18px !important;margin-right:-18px !important;padding-left:22px !important;padding-right:22px !important}
+  }
+</style>
+</helmet>
+
+<div id="ae-root">
+
+<!-- global cursor dot (eased core + trailing ring) -->
+<div id="ae-cursor" style="position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;transition:opacity .4s ease">
+  <div id="ae-fc-ring" style="position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:1.5px solid color-mix(in oklab, var(--accent) 72%, transparent);transform:translate(var(--gx,-60px),var(--gy,-60px)) translate(-50%,-50%) scale(var(--gs,1));will-change:transform"></div>
+  <div id="ae-fc-dot" style="position:absolute;left:0;top:0;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px color-mix(in oklab, var(--accent) 65%, transparent);transform:translate(var(--fx,-60px),var(--fy,-60px)) translate(-50%,-50%);will-change:transform"></div>
+</div>
+
+<!-- ============================= NAV (floating pill) ============================= -->
+<div data-screen-label="Ahnoud Export — Home" style="position:fixed;bottom:22px;left:50%;z-index:60;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .35s ease;transform:translateX(-50%) {{ navTY }};opacity:{{ navOpacity }};pointer-events:{{ navPE }}">
+  <div class="ae-navpill" style="display:flex;align-items:center;gap:6px;background:#1d1c19;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:7px;box-shadow:0 18px 48px rgba(0,0,0,0.36),0 2px 6px rgba(0,0,0,0.22);font-family:var(--font-ui)">
+    <a href="#top" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#2a2824;border:1px solid rgba(255,255,255,0.09);flex:none;color:#fff"><svg viewBox="0 0 290.26 347.48" fill="currentColor" style="height:23px;width:auto;display:block"><path d="M7.26,319.95V44.2h8.3c.17-2.01.56-3.99,1.16-5.95.15-.44.27-.87.44-1.31H0v290.26h162.54c-1.98-2.3-4.11-4.72-6.44-7.26H7.26Z"></path><path d="M187.65,44.2h95.35v275.75h-40.65c-1.16,2.4-2.4,4.81-3.68,7.26h51.58V36.95h-114.76c4.09,2.3,8.15,4.72,12.15,7.26Z"></path><path d="M217.63,95.56c-27.46-30.83-63.06-47.17-99.45-64.43C92.69,19.02,75.04,7.23,66.75,1.25c-3.04-2.19-7.27-1.43-9.34,1.69-5.7,8.55-16.05,25.36-21.05,41.41-.84,2.71.14,5.64,2.44,7.31,5.49,4,16.91,11.9,32.87,20.86-25.36,38.94-38.6,120.18,35.59,176.48,68.34,51.87,89.28,88.25,93.9,97.67.5,1.02,1.94,1.08,2.54.11,33.88-54.08,43.54-91.21,45.7-146.48,1.2-30.67-4.3-73.93-31.76-104.76ZM135.32,200.69c-9.69-8.61-19.34-18.28-28.67-29.89-29.14-36.29-31.58-70.91-27.98-91.57,10.09,6.02,37.44,24.45,49.08,53.4,9.87,24.54,10.25,49.61,7.57,68.06ZM218.9,278.07c-20.82-31.78-49.72-48.35-78.75-73.16,15.09-27.2,24.39-55.57,22.61-83.9,7.89,5.79,15.32,12.2,23.01,19.86,23.69,23.63,34.2,58.2,36.76,84.9,1.22,12.75,1.36,35.96-3.62,52.3Z"></path></svg></a>
+    <div class="ae-navlinks" style="display:flex;align-items:center;gap:2px;padding:0 2px;white-space:nowrap">
+      <a href="#divisions" class="aenav">Divisions</a>
+      <a href="#why" class="aenav">Why us</a>
+      <a href="#quality" class="aenav">Quality</a>
+      <a href="#logistics" class="aenav">Logistics</a>
+      <a href="#markets" class="aenav">Markets</a>
+    </div>
+    <button onClick="{{ openGeneral }}" class="ae-navquote" style="font-family:var(--font-ui);font-size:13.5px;font-weight:600;white-space:nowrap;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;transition:filter .2s" style-hover="font-family:var(--font-ui);font-size:13.5px;font-weight:600;white-space:nowrap;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;filter:brightness(1.1)">Quote</button>
+    <button onClick="{{ toggleTheme }}" title="{{ themeLabel }}" aria-label="{{ themeLabel }}" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#2a2824;border:1px solid rgba(255,255,255,0.1);color:#cdc8be;cursor:pointer;flex:none;transition:background .2s,color .2s" style-hover="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#37332d;border:1px solid rgba(255,255,255,0.16);color:#fff;cursor:pointer;flex:none">
+      <sc-if value="{{ isDark }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+      <sc-if value="{{ isLight }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></sc-if>
+    </button>
+  </div>
+</div>
+
+<div id="top" class="ae-container" style="max-width:none;margin:0 auto;padding:0 28px">
+  <div data-navtrigger style="position:absolute;top:0;left:0;height:130px;width:1px;pointer-events:none"></div>
+
+  <!-- ============================= HERO ============================= -->
+  <section class="ae-sec ae-herosec" style="padding-top:30px">
+    <div class="ae-hero" style="position:relative;isolation:isolate;height:600px;border-radius:var(--radius);overflow:hidden;background:#0d0c0b">
+      <img src="https://images.unsplash.com/photo-1741792191212-60d22002bd1b?auto=format&amp;fit=crop&amp;w=1800&amp;q=70" alt="Container ship loading at port" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:-1">
+      <div style="position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(8,8,7,0.74) 0%,rgba(8,8,7,0.5) 44%,rgba(8,8,7,0.28) 100%)"></div>
+      <div class="ae-hero-eyebrow" style="position:absolute;top:26px;left:40px;display:flex;align-items:center;gap:13px">
+        <div style="width:42px;height:42px;border-radius:11px;background:var(--solid);display:flex;align-items:center;justify-content:center;flex:none;color:var(--on-solid)"><svg viewBox="0 0 290.26 347.48" fill="currentColor" style="height:25px;width:auto;display:block"><path d="M7.26,319.95V44.2h8.3c.17-2.01.56-3.99,1.16-5.95.15-.44.27-.87.44-1.31H0v290.26h162.54c-1.98-2.3-4.11-4.72-6.44-7.26H7.26Z"></path><path d="M187.65,44.2h95.35v275.75h-40.65c-1.16,2.4-2.4,4.81-3.68,7.26h51.58V36.95h-114.76c4.09,2.3,8.15,4.72,12.15,7.26Z"></path><path d="M217.63,95.56c-27.46-30.83-63.06-47.17-99.45-64.43C92.69,19.02,75.04,7.23,66.75,1.25c-3.04-2.19-7.27-1.43-9.34,1.69-5.7,8.55-16.05,25.36-21.05,41.41-.84,2.71.14,5.64,2.44,7.31,5.49,4,16.91,11.9,32.87,20.86-25.36,38.94-38.6,120.18,35.59,176.48,68.34,51.87,89.28,88.25,93.9,97.67.5,1.02,1.94,1.08,2.54.11,33.88-54.08,43.54-91.21,45.7-146.48,1.2-30.67-4.3-73.93-31.76-104.76ZM135.32,200.69c-9.69-8.61-19.34-18.28-28.67-29.89-29.14-36.29-31.58-70.91-27.98-91.57,10.09,6.02,37.44,24.45,49.08,53.4,9.87,24.54,10.25,49.61,7.57,68.06ZM218.9,278.07c-20.82-31.78-49.72-48.35-78.75-73.16,15.09-27.2,24.39-55.57,22.61-83.9,7.89,5.79,15.32,12.2,23.01,19.86,23.69,23.63,34.2,58.2,36.76,84.9,1.22,12.75,1.36,35.96-3.62,52.3Z"></path></svg></div>
+        <div style="line-height:1;flex:none">
+          <div style="font-size:18px;font-weight:800;letter-spacing:0.02em;color:#fff;white-space:nowrap">AHNOUD EXPORT</div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.16em;color:rgba(255,255,255,0.72);text-transform:uppercase;margin-top:6px;white-space:nowrap">Est. 2021 &middot; Dubai</div>
+        </div>
+      </div>
+      <h1 class="ae-hero-title h-hero" style="position:absolute;left:40px;bottom:148px;font-size:136px;font-weight:700;line-height:0.9;letter-spacing:-0.045em;color:#fff">Source the<br>world.</h1>
+      <p class="ae-hero-sub" style="position:absolute;left:40px;bottom:70px;max-width:480px;font-size:17px;line-height:1.5;color:rgba(255,255,255,0.86)">Industrial goods, agricultural products and more — moved across the GCC, India and China. Sourced, certified and documented end to end.</p>
+      <div class="ae-hero-card" style="position:absolute;right:32px;bottom:118px;width:324px;background:var(--card);backdrop-filter:blur(8px);border-radius:var(--radius);padding:22px">
+        <div class="mono" style="font-size:10px;letter-spacing:0.12em;color:var(--mut2);text-transform:uppercase;margin-bottom:9px">Trusted exporter</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--ink2)">ISO 9001 · Halal · CE certified. Sourcing, quality control, freight and customs handled in-house.</div>
+      </div>
+      <div class="ae-hero-cta" style="position:absolute;right:32px;bottom:34px;display:flex;gap:12px">
+        <button onClick="{{ openGeneral }}" class="mono ae-btn" style="font-size:13px;background:var(--solid);color:var(--on-solid);border:none;border-radius:var(--radius);padding:15px 28px;cursor:pointer">Request a quote <span class="ae-arrow">→</span></button>
+        <a href="#divisions" class="mono ae-btn" style="font-size:13px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.4);color:#fff;border-radius:var(--radius);padding:15px 28px;display:inline-block;backdrop-filter:blur(4px)">View divisions</a>
+      </div>
+    </div>
+    <!-- stat strip -->
+    <div class="ae-stat" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);margin-top:14px;border-radius:var(--radius);overflow:hidden">
+      <div class="ae-statcell"><div style="font-size:38px;font-weight:700;letter-spacing:-0.03em">2021</div><div class="mono" style="font-size:11px;color:currentColor;opacity:0.6;margin-top:6px">Founded</div></div>
+      <div class="ae-statcell"><div style="font-size:38px;font-weight:700;letter-spacing:-0.03em">3</div><div class="mono" style="font-size:11px;color:currentColor;opacity:0.6;margin-top:6px">Sourcing regions</div></div>
+      <div class="ae-statcell"><div style="font-size:38px;font-weight:700;letter-spacing:-0.03em">100+</div><div class="mono" style="font-size:11px;color:currentColor;opacity:0.6;margin-top:6px">Product categories</div></div>
+      <div class="ae-statcell"><div style="font-size:38px;font-weight:700;letter-spacing:-0.03em">3</div><div class="mono" style="font-size:11px;color:currentColor;opacity:0.6;margin-top:6px">Active certifications</div></div>
+    </div>
+  </section>
+
+  <!-- ============================= TRUST BAR ============================= -->
+  <section class="reveal ae-trust" data-reveal style="margin-top:56px;padding:28px 0;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:48px;flex-wrap:wrap">
+    <div class="mono" style="font-size:11px;letter-spacing:0.12em;color:var(--mut2);text-transform:uppercase">Certified &amp; compliant</div>
+    <div class="ae-trustitems" style="display:flex;gap:40px;align-items:center;flex:1;flex-wrap:wrap">
+      <div class="mono" style="font-size:15px;font-weight:500;color:var(--ink5);letter-spacing:0.02em">ISO&nbsp;9001</div>
+      <div class="mono" style="font-size:15px;font-weight:500;color:var(--ink5);letter-spacing:0.02em">HALAL</div>
+      <div class="mono" style="font-size:15px;font-weight:500;color:var(--ink5);letter-spacing:0.02em">CE&nbsp;MARK</div>
+      <div class="ae-trustdiv" style="width:1px;height:22px;background:var(--hair)"></div>
+      <div class="mono" style="font-size:12px;color:var(--faint)">Certificate of Origin</div>
+      <div class="mono" style="font-size:12px;color:var(--faint)">Phytosanitary</div>
+      <div class="mono" style="font-size:12px;color:var(--faint)">Customs cleared</div>
+    </div>
+  </section>
+
+  <!-- ============================= DIVISIONS ============================= -->
+  <section id="divisions" class="ae-sec" style="padding:104px 0 0">
+    <div class="reveal" data-reveal style="display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:40px">
+      <div>
+        <div class="mono" style="font-size:11px;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:16px">01 — Divisions</div>
+        <h2 class="h-sec" style="font-size:64px;font-weight:700;letter-spacing:-0.035em;line-height:1">What we trade</h2>
+      </div>
+      <p style="max-width:360px;font-size:15px;line-height:1.55;color:var(--ink4)">We import and export nearly any legal commodity — across three core divisions. Select one to explore.</p>
+    </div>
+
+    <!-- tabs / cards -->
+    <div class="ae-g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <sc-for list="{{ divisions }}" as="d" hint-placeholder-count="3">
+        <button onClick="{{ d.select }}" style="{{ d.cardStyle }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+            <div class="mono" style="font-size:11px;color:currentColor;opacity:0.55">{{ d.num }}</div>
+            <div style="{{ d.dotStyle }}"></div>
+          </div>
+          <div style="font-size:22px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;margin-bottom:12px">{{ d.name }}</div>
+          <div style="font-size:13.5px;line-height:1.5;color:currentColor;opacity:0.72">{{ d.shortDesc }}</div>
+          <div class="mono" style="margin-top:22px;font-size:11px;letter-spacing:0.08em;color:currentColor">{{ d.cta }}</div>
+        </button>
+      </sc-for>
+    </div>
+
+    <!-- active division detail -->
+    <div class="ae-split" style="margin-top:16px;display:grid;grid-template-columns:1.05fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden">
+      <div style="padding:46px 48px">
+        <div class="mono" style="font-size:11px;letter-spacing:0.12em;color:var(--mut2);text-transform:uppercase;margin-bottom:18px">{{ activeNum }} · Division detail</div>
+        <h3 style="font-size:34px;font-weight:700;letter-spacing:-0.025em;line-height:1.05;margin-bottom:18px">{{ activeName }}</h3>
+        <p style="font-size:15.5px;line-height:1.6;color:var(--ink3);max-width:460px">{{ activeLongDesc }}</p>
+        <div style="margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <sc-for list="{{ activeItems }}" as="it" hint-placeholder-count="6">
+            <div class="ae-chip" style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--fill);border-radius:var(--radius-sm)">
+              <div style="width:5px;height:5px;background:var(--accent);border-radius:50%;flex:none"></div>
+              <span style="font-size:13px;color:var(--ink2)">{{ it.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <button onClick="{{ openActiveQuote }}" class="mono ae-btn" style="margin-top:32px;font-size:12.5px;background:var(--solid);color:var(--on-solid);border:none;border-radius:var(--radius);padding:14px 26px;cursor:pointer">Request a quote for this division <span class="ae-arrow">→</span></button>
+      </div>
+      <div style="position:relative;min-height:440px;overflow:hidden;background:#0d0c0b">
+        <img src="https://images.unsplash.com/photo-1601897690942-bcacbad33e55?auto=format&fit=crop&w=1100&q=70" alt="Industrial goods" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:opacity .45s ease;{{ img0vis }}">
+        <img src="https://images.unsplash.com/photo-1606185540834-d6e7483ee1a4?auto=format&fit=crop&w=1100&q=70" alt="Agricultural products" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:opacity .45s ease;{{ img1vis }}">
+        <img src="https://images.unsplash.com/photo-1511578194003-00c80e42dc9b?auto=format&fit=crop&w=1100&q=70" alt="Mixed commodities" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:opacity .45s ease;{{ img2vis }}">
+        <div class="mono" style="position:absolute;top:18px;right:18px;font-size:10px;color:#fff;background:rgba(8,8,7,0.55);padding:5px 9px;border-radius:var(--radius-sm);backdrop-filter:blur(4px);z-index:1">{{ activeImgLabel }}</div>
+      </div>
+    </div>
+    <p class="mono" style="margin-top:18px;font-size:11px;color:var(--faint)">Note — we handle nearly all tradeable, legal commodities. We do not deal in fuels or petroleum products.</p>
+  </section>
+
+  <!-- ============================= WHY ============================= -->
+  <section id="why" class="ae-sec" style="padding:108px 0 0">
+    <div class="reveal mono" data-reveal style="font-size:11px;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:16px">02 — Why Ahnoud Export</div>
+    <h2 class="reveal h-sec" data-reveal style="font-size:64px;font-weight:700;letter-spacing:-0.035em;line-height:1;max-width:760px;margin-bottom:52px">Built for buyers who can&rsquo;t afford surprises.</h2>
+    <div class="ae-g4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden">
+      <div style="background:var(--surf);padding:34px 30px;min-height:240px;display:flex;flex-direction:column">
+        <div class="mono" style="font-size:12px;color:var(--accent);margin-bottom:auto">01</div>
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;margin:26px 0 12px">Certified quality</div>
+        <div style="font-size:13.5px;line-height:1.55;color:var(--ink4)">ISO 9001, Halal and CE compliance with inspection before every shipment leaves the supplier.</div>
+      </div>
+      <div style="background:var(--surf);padding:34px 30px;min-height:240px;display:flex;flex-direction:column">
+        <div class="mono" style="font-size:12px;color:var(--accent);margin-bottom:auto">02</div>
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;margin:26px 0 12px">Global logistics reach</div>
+        <div style="font-size:13.5px;line-height:1.55;color:var(--ink4)">Sea, air and road corridors connecting India and China to every GCC market, door to door.</div>
+      </div>
+      <div style="background:var(--surf);padding:34px 30px;min-height:240px;display:flex;flex-direction:column">
+        <div class="mono" style="font-size:12px;color:var(--accent);margin-bottom:auto">03</div>
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;margin:26px 0 12px">Documentation handled</div>
+        <div style="font-size:13.5px;line-height:1.55;color:var(--ink4)">Certificate of origin, phytosanitary, customs and letters of credit — prepared and managed for you.</div>
+      </div>
+      <div style="background:var(--surf);padding:34px 30px;min-height:240px;display:flex;flex-direction:column">
+        <div class="mono" style="font-size:12px;color:var(--accent);margin-bottom:auto">04</div>
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;margin:26px 0 12px">A single point of contact</div>
+        <div style="font-size:13.5px;line-height:1.55;color:var(--ink4)">One team owns your order from quote to delivery — no chasing brokers, suppliers or freight lines.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= QUALITY & CERTS ============================= -->
+  <section id="quality" class="ae-sec" style="padding:108px 0 0">
+    <div class="ae-dark" style="background:#1a1a1a;border-radius:var(--radius);padding:72px 64px;color:#f5f4f2">
+      <div class="reveal" data-reveal style="display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:52px">
+        <div>
+          <div class="mono" style="font-size:11px;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:16px">03 — Quality &amp; certifications</div>
+          <h2 class="h-sec" style="font-size:64px;font-weight:700;letter-spacing:-0.035em;line-height:1;color:#fff">Trust, on paper.</h2>
+        </div>
+        <p style="max-width:380px;font-size:15px;line-height:1.6;color:#b8b4ac">Every shipment is backed by recognised standards and complete export documentation — verifiable, auditable, and ready for customs.</p>
+      </div>
+      <div class="ae-g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <div style="border:1px solid #34322e;border-radius:var(--radius);padding:32px;background:#211f1c">
+          <div style="display:flex;align-items:center;justify-content:center;width:64px;height:64px;border:1.5px solid #4a463f;border-radius:50%;margin-bottom:24px"><span class="mono" style="font-size:13px;font-weight:500;color:#e8e4dc">ISO</span></div>
+          <div style="font-size:21px;font-weight:700;letter-spacing:-0.02em;color:#fff">ISO 9001</div>
+          <div style="font-size:13.5px;line-height:1.55;color:#b8b4ac;margin-top:10px">Quality management systems — consistent process from sourcing through shipment.</div>
+        </div>
+        <div style="border:1px solid #34322e;border-radius:var(--radius);padding:32px;background:#211f1c">
+          <div style="display:flex;align-items:center;justify-content:center;width:64px;height:64px;border:1.5px solid #4a463f;border-radius:50%;margin-bottom:24px"><span class="mono" style="font-size:13px;font-weight:500;color:#e8e4dc">حلال</span></div>
+          <div style="font-size:21px;font-weight:700;letter-spacing:-0.02em;color:#fff">Halal Certified</div>
+          <div style="font-size:13.5px;line-height:1.55;color:#b8b4ac;margin-top:10px">Food and consumable lines certified Halal for confident distribution across GCC markets.</div>
+        </div>
+        <div style="border:1px solid #34322e;border-radius:var(--radius);padding:32px;background:#211f1c">
+          <div style="display:flex;align-items:center;justify-content:center;width:64px;height:64px;border:1.5px solid #4a463f;border-radius:50%;margin-bottom:24px"><span class="mono" style="font-size:13px;font-weight:500;color:#e8e4dc">CE</span></div>
+          <div style="font-size:21px;font-weight:700;letter-spacing:-0.02em;color:#fff">CE Marking</div>
+          <div style="font-size:13.5px;line-height:1.55;color:#b8b4ac;margin-top:10px">Machinery and industrial goods conforming to applicable European health &amp; safety standards.</div>
+        </div>
+      </div>
+      <div style="margin-top:24px;display:flex;gap:32px;flex-wrap:wrap;padding-top:30px;border-top:1px solid #34322e">
+        <div class="mono" style="font-size:12px;color:#8e8a82">Also handled —</div>
+        <div class="mono" style="font-size:12px;color:#cfcbc2">Certificate of Origin</div>
+        <div class="mono" style="font-size:12px;color:#cfcbc2">Phytosanitary certificate</div>
+        <div class="mono" style="font-size:12px;color:#cfcbc2">Commercial invoice &amp; packing list</div>
+        <div class="mono" style="font-size:12px;color:#cfcbc2">Bill of lading</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= LOGISTICS ============================= -->
+  <section id="logistics" class="ae-sec" style="padding:108px 0 0">
+    <div class="reveal mono" data-reveal style="font-size:11px;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:16px">04 — Logistics &amp; capabilities</div>
+    <h2 class="reveal h-sec" data-reveal style="font-size:64px;font-weight:700;letter-spacing:-0.035em;line-height:1;max-width:720px;margin-bottom:14px">How we ship.</h2>
+    <p class="reveal" data-reveal style="font-size:15px;line-height:1.6;color:var(--ink4);max-width:560px;margin-bottom:50px">We operate the whole corridor — not just the paperwork. Here is the path every order follows.</p>
+
+    <!-- flow -->
+    <div class="ae-flow" style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px 0;margin-bottom:48px">
+      <div style="padding:0 18px 0 0;position:relative"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:14px">01</div><div style="font-size:15px;font-weight:700;margin-bottom:6px">Inquiry</div><div style="font-size:12.5px;line-height:1.45;color:var(--mut)">Tell us the commodity, volume and destination.</div></div>
+      <div style="padding:0 18px;position:relative;border-left:1px solid var(--line)"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:14px">02</div><div style="font-size:15px;font-weight:700;margin-bottom:6px">Quote &amp; Incoterm</div><div style="font-size:12.5px;line-height:1.45;color:var(--mut)">FOB, CIF, CFR or DDP — priced to your terms.</div></div>
+      <div style="padding:0 18px;position:relative;border-left:1px solid var(--line)"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:14px">03</div><div style="font-size:15px;font-weight:700;margin-bottom:6px">Sourcing &amp; QC</div><div style="font-size:12.5px;line-height:1.45;color:var(--mut)">Vetted suppliers, pre-shipment inspection.</div></div>
+      <div style="padding:0 18px 0 0;position:relative"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:14px">04</div><div style="font-size:15px;font-weight:700;margin-bottom:6px">Documentation</div><div style="font-size:12.5px;line-height:1.45;color:var(--mut)">Origin, phyto, customs &amp; LC prepared.</div></div>
+      <div style="padding:0 18px;position:relative;border-left:1px solid var(--line)"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:14px">05</div><div style="font-size:15px;font-weight:700;margin-bottom:6px">Freight</div><div style="font-size:12.5px;line-height:1.45;color:var(--mut)">Sea, air or road — booked and tracked.</div></div>
+      <div style="padding:0 18px;position:relative;border-left:1px solid var(--line)"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:14px">06</div><div style="font-size:15px;font-weight:700;margin-bottom:6px">Delivery</div><div style="font-size:12.5px;line-height:1.45;color:var(--mut)">Cleared and delivered to your door.</div></div>
+    </div>
+
+    <!-- capability cards -->
+    <div class="ae-cap" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <div class="ae-capcard"><div class="mono" style="font-size:11px;letter-spacing:0.1em;color:currentColor;opacity:0.55;text-transform:uppercase;margin-bottom:18px">Methods</div><div style="font-size:14px;line-height:1.9;color:currentColor;opacity:0.82">Sea — FCL &amp; LCL<br>Air freight<br>Road (GCC overland)</div></div>
+      <div class="ae-capcard"><div class="mono" style="font-size:11px;letter-spacing:0.1em;color:currentColor;opacity:0.55;text-transform:uppercase;margin-bottom:18px">Incoterms</div><div style="font-size:14px;line-height:1.9;color:currentColor;opacity:0.82">EXW · FOB · CFR<br>CIF · DAP · DDP</div></div>
+      <div class="ae-capcard"><div class="mono" style="font-size:11px;letter-spacing:0.1em;color:currentColor;opacity:0.55;text-transform:uppercase;margin-bottom:18px">Lead time</div><div style="font-size:38px;font-weight:700;letter-spacing:-0.03em">2&ndash;6</div><div style="font-size:13px;color:currentColor;opacity:0.6;margin-top:4px">weeks, typical door-to-door</div></div>
+      <div class="ae-capcard"><div class="mono" style="font-size:11px;letter-spacing:0.1em;color:currentColor;opacity:0.55;text-transform:uppercase;margin-bottom:18px">Capacity</div><div style="font-size:38px;font-weight:700;letter-spacing:-0.03em">FCL+</div><div style="font-size:13px;color:currentColor;opacity:0.6;margin-top:4px">from single pallet to full container loads</div></div>
+    </div>
+  </section>
+
+  <!-- ============================= MARKETS (animated map) ============================= -->
+  <section id="markets" class="ae-sec" style="padding:108px 0 0">
+    <div class="reveal mono" data-reveal style="font-size:11px;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:16px">05 — Markets we serve</div>
+    <h2 class="reveal h-sec" data-reveal style="font-size:64px;font-weight:700;letter-spacing:-0.035em;line-height:1;max-width:720px;margin-bottom:50px">Four regions, one corridor.</h2>
+    <div class="ae-split" style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:stretch">
+      <!-- map panel -->
+      <div style="position:relative;border-radius:var(--radius);overflow:hidden;min-height:460px;background:radial-gradient(120% 90% at 70% 0%,var(--fill2),var(--fill));display:flex;align-items:center;justify-content:center">
+        <div class="ae-mapinner" style="position:relative;width:100%;aspect-ratio:950/620">
+        <img class="ae-worldmap" src="assets/worldmap.svg" alt="World map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill">
+        <svg viewBox="0 0 950 620" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">
+          <defs>
+            <radialGradient id="aemap-glow">
+              <stop offset="0%" style="stop-color:var(--accent);stop-opacity:0.55"></stop>
+              <stop offset="100%" style="stop-color:var(--accent);stop-opacity:0"></stop>
+            </radialGradient>
+            <linearGradient id="aemap-route" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" style="stop-color:var(--accent);stop-opacity:0.15"></stop>
+              <stop offset="50%" style="stop-color:var(--accent);stop-opacity:1"></stop>
+              <stop offset="100%" style="stop-color:var(--accent);stop-opacity:0.15"></stop>
+            </linearGradient>
+          </defs>
+          <!-- node glows -->
+          <circle cx="498" cy="174" r="30" fill="url(#aemap-glow)"></circle>
+          <circle cx="610" cy="263" r="30" fill="url(#aemap-glow)"></circle>
+          <circle cx="681" cy="277" r="30" fill="url(#aemap-glow)"></circle>
+          <circle cx="746" cy="233" r="30" fill="url(#aemap-glow)"></circle>
+          <!-- corridors -->
+          <path d="M498,174 Q545,235 610,263" fill="none" stroke="var(--accent)" stroke-opacity="0.25" stroke-width="2.5"></path>
+          <path d="M610,263 Q641,268 681,277" fill="none" stroke="var(--accent)" stroke-opacity="0.25" stroke-width="2.5"></path>
+          <path d="M681,277 Q735,225 746,233" fill="none" stroke="var(--accent)" stroke-opacity="0.25" stroke-width="2.5"></path>
+          <path d="M498,174 Q545,235 610,263" fill="none" stroke="url(#aemap-route)" stroke-width="2.8" stroke-dasharray="8 9" stroke-linecap="round" style="animation:dashmove 2.4s linear infinite"></path>
+          <path d="M610,263 Q641,268 681,277" fill="none" stroke="url(#aemap-route)" stroke-width="2.8" stroke-dasharray="8 9" stroke-linecap="round" style="animation:dashmove 2.4s linear infinite"></path>
+          <path d="M681,277 Q735,225 746,233" fill="none" stroke="url(#aemap-route)" stroke-width="2.8" stroke-dasharray="8 9" stroke-linecap="round" style="animation:dashmove 2.4s linear infinite"></path>
+          <!-- travelling cargo dots -->
+          <circle r="4" style="fill:var(--accent)"><animateMotion dur="3.6s" repeatCount="indefinite" path="M498,174 Q545,235 610,263"></animateMotion></circle>
+          <circle r="4" style="fill:var(--accent)"><animateMotion dur="3.6s" begin="0.9s" repeatCount="indefinite" path="M610,263 Q641,268 681,277"></animateMotion></circle>
+          <circle r="4" style="fill:var(--accent)"><animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite" path="M681,277 Q735,225 746,233"></animateMotion></circle>
+        </svg>
+        <!-- nodes + labels -->
+        <div style="position:absolute;left:52.4%;top:28%">
+          <div style="position:absolute;width:16px;height:16px;left:-8px;top:-8px;border-radius:50%;background:var(--accent);transform-origin:center;animation:pulsering 2.6s ease-out infinite"></div>
+          <div style="position:absolute;width:11px;height:11px;left:-5.5px;top:-5.5px;border-radius:50%;background:var(--accent);border:2px solid var(--fill);box-shadow:0 0 0 1px var(--accent)"></div>
+          <div class="mono" style="position:absolute;left:16px;top:-19px;font-size:11px;font-weight:600;color:var(--ink);white-space:nowrap;letter-spacing:0.04em">Europe</div>
+          <div class="mono" style="position:absolute;left:16px;top:-5px;font-size:9px;color:var(--mut2);white-space:nowrap;letter-spacing:0.06em">MARKET &amp; SOURCING</div>
+        </div>
+        <div style="position:absolute;left:64.2%;top:42.4%">
+          <div style="position:absolute;width:16px;height:16px;left:-8px;top:-8px;border-radius:50%;background:var(--accent);transform-origin:center;animation:pulsering 2.6s ease-out infinite .7s"></div>
+          <div style="position:absolute;width:11px;height:11px;left:-5.5px;top:-5.5px;border-radius:50%;background:var(--accent);border:2px solid var(--fill);box-shadow:0 0 0 1px var(--accent)"></div>
+          <div class="mono" style="position:absolute;right:16px;top:-19px;font-size:11px;font-weight:600;color:var(--ink);white-space:nowrap;letter-spacing:0.04em;text-align:right">GCC</div>
+          <div class="mono" style="position:absolute;right:16px;top:-5px;font-size:9px;color:var(--mut2);white-space:nowrap;letter-spacing:0.06em;text-align:right">PRIMARY MARKET</div>
+        </div>
+        <div style="position:absolute;left:71.7%;top:44.6%">
+          <div style="position:absolute;width:16px;height:16px;left:-8px;top:-8px;border-radius:50%;background:var(--accent);transform-origin:center;animation:pulsering 2.6s ease-out infinite 1.4s"></div>
+          <div style="position:absolute;width:11px;height:11px;left:-5.5px;top:-5.5px;border-radius:50%;background:var(--accent);border:2px solid var(--fill);box-shadow:0 0 0 1px var(--accent)"></div>
+          <div class="mono" style="position:absolute;left:16px;top:-19px;font-size:11px;font-weight:600;color:var(--ink);white-space:nowrap;letter-spacing:0.04em">India</div>
+          <div class="mono" style="position:absolute;left:16px;top:-5px;font-size:9px;color:var(--mut2);white-space:nowrap;letter-spacing:0.06em">SOURCING HUB</div>
+        </div>
+        <div style="position:absolute;left:78.5%;top:37.5%">
+          <div style="position:absolute;width:16px;height:16px;left:-8px;top:-8px;border-radius:50%;background:var(--accent);transform-origin:center;animation:pulsering 2.6s ease-out infinite 2.1s"></div>
+          <div style="position:absolute;width:11px;height:11px;left:-5.5px;top:-5.5px;border-radius:50%;background:var(--accent);border:2px solid var(--fill);box-shadow:0 0 0 1px var(--accent)"></div>
+          <div class="mono" style="position:absolute;right:16px;top:-19px;font-size:11px;font-weight:600;color:var(--ink);white-space:nowrap;letter-spacing:0.04em;text-align:right">China</div>
+          <div class="mono" style="position:absolute;right:16px;top:-5px;font-size:9px;color:var(--mut2);white-space:nowrap;letter-spacing:0.06em;text-align:right">SOURCING HUB</div>
+        </div>
+        </div>
+        <!-- corner meta -->
+        <div class="mono" style="position:absolute;top:16px;left:18px;font-size:10px;letter-spacing:0.12em;color:var(--mut2);text-transform:uppercase">Trade corridor</div>
+        <div class="mono" style="position:absolute;bottom:16px;left:18px;font-size:10px;color:var(--faint)">Europe &middot; GCC &middot; India &middot; China &mdash; illustrative routing</div>
+        <div class="mono" style="position:absolute;bottom:16px;right:18px;font-size:10px;color:var(--faint)">4 hubs &middot; 3 corridors</div>
+      </div>
+      <!-- region list -->
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="ae-regioncard">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">GCC</div><div class="mono" style="font-size:11px;color:currentColor;opacity:0.6">Primary market</div></div>
+          <div style="font-size:13px;line-height:1.5;color:currentColor;opacity:0.75;margin-top:8px">Saudi Arabia, UAE, Qatar, Kuwait, Bahrain &amp; Oman — our core distribution base.</div>
+        </div>
+        <div class="ae-regioncard">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">India</div><div class="mono" style="font-size:11px;color:currentColor;opacity:0.6">Sourcing hub</div></div>
+          <div style="font-size:13px;line-height:1.5;color:currentColor;opacity:0.75;margin-top:8px">Agricultural products, textiles, pharmaceuticals and industrial supplies.</div>
+        </div>
+        <div class="ae-regioncard">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">China</div><div class="mono" style="font-size:11px;color:currentColor;opacity:0.6">Sourcing hub</div></div>
+          <div style="font-size:13px;line-height:1.5;color:currentColor;opacity:0.75;margin-top:8px">Machinery, electronics, consumer goods and manufacturing inputs at scale.</div>
+        </div>
+        <div class="ae-regioncard">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Europe</div><div class="mono" style="font-size:11px;color:currentColor;opacity:0.6">Market &amp; sourcing</div></div>
+          <div style="font-size:13px;line-height:1.5;color:currentColor;opacity:0.75;margin-top:8px">Specialised machinery, food ingredients and premium goods — sourced and distributed.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= TESTIMONIALS ============================= -->
+  <section class="ae-sec" style="padding:108px 0 0">
+    <div class="reveal mono" data-reveal style="font-size:11px;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:40px">06 — Proof</div>
+    <div class="ae-g2" style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div style="border:1px solid var(--line);border-radius:var(--radius);padding:44px">
+        <p style="font-size:23px;font-weight:500;line-height:1.4;letter-spacing:-0.015em">&ldquo;Ahnoud handled our first machinery import from China to Riyadh end to end. Documentation was flawless and it cleared customs without a single hold.&rdquo;</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:30px">
+          <div style="width:40px;height:40px;border-radius:50%;background:repeating-linear-gradient(135deg,var(--stripe),var(--stripe) 6px,var(--hair) 6px,var(--hair) 12px)"></div>
+          <div><div style="font-size:13px;font-weight:700">Procurement Lead</div><div class="mono" style="font-size:11px;color:var(--mut2)">Industrial distributor · UAE</div></div>
+        </div>
+      </div>
+      <div style="border:1px solid var(--line);border-radius:var(--radius);padding:44px">
+        <p style="font-size:23px;font-weight:500;line-height:1.4;letter-spacing:-0.015em">&ldquo;Reliable Halal-certified food supply from India, on schedule every quarter. They feel like part of our own team rather than a broker.&rdquo;</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:30px">
+          <div style="width:40px;height:40px;border-radius:50%;background:repeating-linear-gradient(135deg,var(--stripe),var(--stripe) 6px,var(--hair) 6px,var(--hair) 12px)"></div>
+          <div><div style="font-size:13px;font-weight:700">Founder</div><div class="mono" style="font-size:11px;color:var(--mut2)">Food importer · Saudi Arabia</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="mono" style="margin-top:18px;font-size:11px;color:var(--faint)">Sample references — replace with named client quotes &amp; case studies when available.</p>
+  </section>
+
+  <!-- ============================= CTA + FOOTER (joined) ============================= -->
+  <footer id="contact" class="ae-foot-bleed" style="position:relative;overflow:hidden;background:#0d0c0b;color:#f2efe9;margin:104px -28px 0;padding:108px 48px 56px">
+
+    <div style="position:relative;z-index:1">
+      <!-- CTA -->
+      <div style="text-align:center;max-width:780px;margin:0 auto;padding-bottom:88px;border-bottom:1px solid rgba(255,255,255,0.08)">
+        <h2 class="h-cta" style="font-size:64px;font-weight:700;letter-spacing:-0.04em;line-height:0.98;color:#fff;max-width:760px;margin:0 auto">Ready to source with confidence?</h2>
+        <p style="font-size:17px;color:#c4beb4;margin:24px auto 0;max-width:480px;line-height:1.5">Tell us what you need. We&rsquo;ll come back with a quote, an Incoterm and a lead time — not a runaround.</p>
+        <button onClick="{{ openGeneral }}" class="mono ae-btn" style="margin-top:40px;font-size:14px;background:#fff;color:#1a1a1a;border:none;border-radius:var(--radius);padding:18px 40px;cursor:pointer;transition:background .2s" style-hover="margin-top:40px;font-size:14px;background:#f0ece4;color:#1a1a1a;border:none;border-radius:var(--radius);padding:18px 40px;cursor:pointer">Request a quote <span class="ae-arrow">→</span></button>
+      </div>
+
+      <!-- top row -->
+      <div class="ae-foot-top" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:flex-start;gap:48px;margin-top:76px">
+        <!-- left: links -->
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <a href="#divisions" class="flink" style="font-size:22px;letter-spacing:-0.015em">Divisions</a>
+          <a href="#why" class="flink" style="font-size:22px;letter-spacing:-0.015em">Why us</a>
+          <a href="#quality" class="flink" style="font-size:22px;letter-spacing:-0.015em">Quality</a>
+          <a href="#logistics" class="flink" style="font-size:22px;letter-spacing:-0.015em">Logistics</a>
+          <a href="#markets" class="flink" style="font-size:22px;letter-spacing:-0.015em">Markets</a>
+        </div>
+
+        <!-- center: contact + social -->
+        <div style="text-align:center;display:flex;flex-direction:column;align-items:center;max-width:340px">
+          <div class="mono" style="font-size:11px;letter-spacing:0.14em;color:#8f897f;text-transform:uppercase;margin-bottom:14px">Head office</div>
+          <div style="font-size:15.5px;line-height:1.6;color:#e8e4dc">Gulf Travel &amp; Tourism, Showroom 1, Ground Floor<br>Port Saeed (Between dnata &amp; Deira Clocktower)<br>Deira, Dubai, UAE</div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:16px">
+            <a href="tel:+971502909038" class="fdim mono" style="font-size:12.5px">+971 50 290 9038</a>
+            <a href="mailto:hello@ahnoud.com" class="fdim mono" style="font-size:12.5px">hello@ahnoud.com</a>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:24px">
+            <a href="https://wa.me/971502909038" target="_blank" rel="noopener" aria-label="WhatsApp" class="fsoc"><svg viewBox="0 0 24 24" fill="currentColor" style="width:17px;height:17px;display:block"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.34 4.96L2 22l5.2-1.36c1.46.8 3.1 1.22 4.84 1.22 5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2Zm0 18.13c-1.55 0-3.07-.42-4.4-1.2l-.31-.19-3.09.81.82-3.01-.2-.31a8.13 8.13 0 0 1-1.25-4.32c0-4.55 3.7-8.25 8.25-8.25s8.25 3.7 8.25 8.25-3.7 8.25-8.25 8.25Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"></path></svg></a>
+            <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" class="fsoc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;display:block"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="3.8"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg></a>
+            <a href="mailto:hello@ahnoud.com" aria-label="Email" class="fsoc" style="font-size:14px">@</a>
+          </div>
+        </div>
+
+        <!-- right: certification badge -->
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:16px;text-align:right">
+          <div style="font-size:13.5px;line-height:1.45;color:#b8b2a8;max-width:160px">Recognised quality &amp;&nbsp;compliance, since&nbsp;2021</div>
+          <div style="background:#15130f;border:1px solid #34302a;border-radius:var(--radius);padding:20px 22px 16px;width:188px;text-align:center">
+            <div style="width:46px;height:46px;border-radius:50%;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#fff"><svg viewBox="0 0 290.26 347.48" fill="currentColor" style="height:24px;width:auto;display:block"><path d="M7.26,319.95V44.2h8.3c.17-2.01.56-3.99,1.16-5.95.15-.44.27-.87.44-1.31H0v290.26h162.54c-1.98-2.3-4.11-4.72-6.44-7.26H7.26Z"></path><path d="M187.65,44.2h95.35v275.75h-40.65c-1.16,2.4-2.4,4.81-3.68,7.26h51.58V36.95h-114.76c4.09,2.3,8.15,4.72,12.15,7.26Z"></path><path d="M217.63,95.56c-27.46-30.83-63.06-47.17-99.45-64.43C92.69,19.02,75.04,7.23,66.75,1.25c-3.04-2.19-7.27-1.43-9.34,1.69-5.7,8.55-16.05,25.36-21.05,41.41-.84,2.71.14,5.64,2.44,7.31,5.49,4,16.91,11.9,32.87,20.86-25.36,38.94-38.6,120.18,35.59,176.48,68.34,51.87,89.28,88.25,93.9,97.67.5,1.02,1.94,1.08,2.54.11,33.88-54.08,43.54-91.21,45.7-146.48,1.2-30.67-4.3-73.93-31.76-104.76ZM135.32,200.69c-9.69-8.61-19.34-18.28-28.67-29.89-29.14-36.29-31.58-70.91-27.98-91.57,10.09,6.02,37.44,24.45,49.08,53.4,9.87,24.54,10.25,49.61,7.57,68.06ZM218.9,278.07c-20.82-31.78-49.72-48.35-78.75-73.16,15.09-27.2,24.39-55.57,22.61-83.9,7.89,5.79,15.32,12.2,23.01,19.86,23.69,23.63,34.2,58.2,36.76,84.9,1.22,12.75,1.36,35.96-3.62,52.3Z"></path></svg></div>
+            <div style="font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.01em">Certified Exporter</div>
+            <div style="height:1px;background:#34302a;margin:11px 0 10px"></div>
+            <div class="mono" style="font-size:9px;letter-spacing:0.12em;color:#8f897f;white-space:nowrap">ISO 9001 · HALAL · CE</div>
+          </div>
+        </div>
+
+        <!-- mid row: full-width on desktop, fills right column on tablet -->
+        <div class="ae-foot-mid" style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:24px">
+          <div class="mono" style="font-size:11px;color:#807b72;line-height:1">© 2026 Ahnoud Export — All rights reserved</div>
+          <a href="#top" class="fdim mono" style="font-size:11px;line-height:1">Privacy Policy</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+</div>
+
+<!-- ============================= QUOTE MODAL ============================= -->
+<sc-if value="{{ quoteOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:100;background:rgba(20,20,20,0.55);backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;padding:48px 20px;overflow-y:auto" onClick="{{ closeQuote }}">
+    <div onClick="{{ stop }}" style="width:100%;max-width:620px;background:var(--surf);border-radius:var(--radius);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:26px 36px;border-bottom:1px solid var(--line2)">
+        <div>
+          <div class="mono" style="font-size:11px;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase">Request a quote</div>
+          <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;margin-top:4px">Tell us what you need to source</div>
+        </div>
+        <button onClick="{{ closeQuote }}" style="background:var(--fill2);border:none;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--ink4);line-height:1;flex:none">×</button>
+      </div>
+
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:64px 36px;text-align:center">
+          <div style="width:60px;height:60px;border-radius:50%;background:var(--solid);color:var(--on-solid);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 24px">✓</div>
+          <div style="font-size:24px;font-weight:700;letter-spacing:-0.02em;margin-bottom:10px">Request received</div>
+          <p style="font-size:14.5px;line-height:1.6;color:var(--ink4);max-width:380px;margin:0 auto">Thank you, {{ submittedName }}. Our team will reply with a quote, Incoterm and lead time within one business day.</p>
+          <button onClick="{{ closeQuote }}" class="mono" style="margin-top:30px;font-size:12.5px;background:var(--solid);color:var(--on-solid);border:none;border-radius:var(--radius);padding:13px 28px;cursor:pointer">Close</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submit }}" style="padding:30px 36px 36px">
+          <div class="ae-formrow" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
+            <div>
+              <label class="mono" style="font-size:11px;color:var(--mut2);display:block;margin-bottom:7px">FULL NAME *</label>
+              <input value="{{ f.name }}" onInput="{{ setName }}" placeholder="Your name" style="{{ nameStyle }}">
+              <sc-if value="{{ err.name }}" hint-placeholder-val="{{ false }}"><div class="mono" style="font-size:10.5px;color:#b04030;margin-top:6px">{{ err.name }}</div></sc-if>
+            </div>
+            <div>
+              <label class="mono" style="font-size:11px;color:var(--mut2);display:block;margin-bottom:7px">COMPANY</label>
+              <input value="{{ f.company }}" onInput="{{ setCompany }}" placeholder="Company name" style="{{ inputBase }}">
+            </div>
+          </div>
+          <div class="ae-formrow" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
+            <div>
+              <label class="mono" style="font-size:11px;color:var(--mut2);display:block;margin-bottom:7px">EMAIL *</label>
+              <input value="{{ f.email }}" onInput="{{ setEmail }}" placeholder="you@company.com" style="{{ emailStyle }}">
+              <sc-if value="{{ err.email }}" hint-placeholder-val="{{ false }}"><div class="mono" style="font-size:10.5px;color:#b04030;margin-top:6px">{{ err.email }}</div></sc-if>
+            </div>
+            <div>
+              <label class="mono" style="font-size:11px;color:var(--mut2);display:block;margin-bottom:7px">DESTINATION COUNTRY</label>
+              <input value="{{ f.country }}" onInput="{{ setCountry }}" placeholder="e.g. Saudi Arabia" style="{{ inputBase }}">
+            </div>
+          </div>
+          <div style="margin-bottom:18px">
+            <label class="mono" style="font-size:11px;color:var(--mut2);display:block;margin-bottom:7px">DIVISION</label>
+            <select value="{{ f.division }}" onChange="{{ setDivision }}" style="{{ inputBase }}">
+              <option>General inquiry</option>
+              <option>Industrial Goods &amp; Machinery</option>
+              <option>Agricultural &amp; Food Products</option>
+              <option>Mixed / Other Commodities</option>
+            </select>
+          </div>
+          <div style="margin-bottom:24px">
+            <label class="mono" style="font-size:11px;color:var(--mut2);display:block;margin-bottom:7px">WHAT DO YOU NEED TO SOURCE? *</label>
+            <textarea value="{{ f.details }}" onInput="{{ setDetails }}" placeholder="Commodity, specifications, quantity, target timeline…" rows="4" style="{{ detailsStyle }}"></textarea>
+            <sc-if value="{{ err.details }}" hint-placeholder-val="{{ false }}"><div class="mono" style="font-size:10.5px;color:#b04030;margin-top:6px">{{ err.details }}</div></sc-if>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+            <div class="mono" style="font-size:11px;color:var(--faint)">We reply within one business day.</div>
+            <button type="submit" class="mono ae-btn" style="font-size:13px;background:var(--solid);color:var(--on-solid);border:none;border-radius:var(--radius);padding:15px 32px;cursor:pointer">Send request <span class="ae-arrow">→</span></button>
+          </div>
+        </form>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Desktop&quot;,&quot;options&quot;:[&quot;Desktop&quot;,&quot;Tablet&quot;,&quot;Mobile&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;fontPairing&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Manrope · Modern&quot;,&quot;options&quot;:[&quot;Helvetica · Swiss&quot;,&quot;Archivo · Industrial&quot;,&quot;Space Grotesk · Techy&quot;,&quot;Bricolage · Editorial&quot;,&quot;Manrope · Modern&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a851d6&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;cornerRadius&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:8,&quot;min&quot;:0,&quot;max&quot;:28,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: (typeof localStorage !== 'undefined' && localStorage.getItem('ae-theme')) || 'light',
+    navShown: false,
+    quoteOpen: false,
+    activeDivision: 0,
+    form: { name:'', company:'', email:'', country:'', division:'General inquiry', details:'' },
+    errors: {},
+    submitted: false,
+    submittedName: ''
+  };
+
+  get divisionData() {
+    return [
+      {
+        num: '01',
+        name: 'Industrial Goods & Machinery',
+        shortDesc: 'Machinery, equipment, spare parts and industrial supplies from vetted manufacturers.',
+        longDesc: 'Production machinery, building materials and industrial components sourced from audited manufacturers across China and India — inspected before shipment and CE-conformant where applicable.',
+        cta: 'Explore →',
+        imgLabel: 'IMG — machinery / industrial parts',
+        img: 'https://images.unsplash.com/photo-1601897690942-bcacbad33e55?auto=format&fit=crop&w=1100&q=70',
+        items: ['CNC & packaging machinery','Construction materials','Electrical equipment','Spare parts & components','Pumps & motors','Tools & hardware']
+      },
+      {
+        num: '02',
+        name: 'Agricultural & Food Products',
+        shortDesc: 'Grains, pulses, spices and processed foods — Halal certified, cold-chain where needed.',
+        longDesc: 'Bulk and packaged food commodities handled with Halal certification and full phytosanitary documentation — sourced primarily from India and distributed across GCC markets.',
+        cta: 'Explore →',
+        imgLabel: 'IMG — grains / packaged food',
+        img: 'https://images.unsplash.com/photo-1606185540834-d6e7483ee1a4?auto=format&fit=crop&w=1100&q=70',
+        items: ['Rice & grains','Pulses & legumes','Spices & seasonings','Packaged & processed foods','Beverages','Dried fruits & nuts']
+      },
+      {
+        num: '03',
+        name: 'Mixed / Other Commodities',
+        shortDesc: 'Textiles, consumer goods, chemicals (non-fuel) and bespoke sourcing on request.',
+        longDesc: 'If it is tradeable and legal, we can move it. Textiles, consumer electronics, household goods and made-to-order sourcing — excluding fuels and petroleum products.',
+        cta: 'Explore →',
+        imgLabel: 'IMG — textiles / consumer goods',
+        img: 'https://images.unsplash.com/photo-1511578194003-00c80e42dc9b?auto=format&fit=crop&w=1100&q=70',
+        items: ['Textiles & garments','Consumer electronics','Household goods','Industrial chemicals','Packaging materials','Custom sourcing']
+      }
+    ];
+  }
+
+  get fontPairs() {
+    return {
+      'Helvetica · Swiss':     { d:"'Helvetica Neue',Helvetica,Arial,sans-serif", b:"'Helvetica Neue',Helvetica,Arial,sans-serif", m:"'JetBrains Mono',monospace" },
+      'Archivo · Industrial':  { d:"'Archivo',sans-serif", b:"'Archivo',sans-serif", m:"'Space Mono',monospace" },
+      'Space Grotesk · Techy': { d:"'Space Grotesk',sans-serif", b:"'Space Grotesk',sans-serif", m:"'Space Mono',monospace" },
+      'Bricolage · Editorial': { d:"'Bricolage Grotesque',sans-serif", b:"'IBM Plex Sans',sans-serif", m:"'IBM Plex Mono',monospace" },
+      'Manrope · Modern':      { d:"'Manrope',sans-serif", b:"'Manrope',sans-serif", m:"'JetBrains Mono',monospace" }
+    };
+  }
+
+  get monoFonts() {
+    return {
+      'JetBrains Mono': "'JetBrains Mono',monospace",
+      'IBM Plex Mono':  "'IBM Plex Mono',monospace",
+      'Space Mono':     "'Space Mono',monospace",
+      'DM Mono':        "'DM Mono',monospace"
+    };
+  }
+
+  applyTheme() {
+    const p = this.fontPairs[this.props.fontPairing] || this.fontPairs['Helvetica · Swiss'];
+    const r = document.documentElement.style;
+    r.setProperty('--accent', this.props.accent || '#b06a3f');
+    const cr = this.props.cornerRadius;
+    r.setProperty('--radius', ((cr === undefined || cr === null) ? 8 : cr) + 'px');
+    r.setProperty('--font-display', p.d);
+    r.setProperty('--font-body', p.b);
+    r.setProperty('--font-mono', p.m);
+    const mf = this.monoFonts[this.props.monoFont];
+    if (mf) r.setProperty('--font-mono', mf);
+  }
+
+  applyDevice() {
+    const W = { Desktop:'100%', Tablet:'834px', Mobile:'390px' };
+    const dev = this.props.device || 'Desktop';
+    const root = document.getElementById('ae-root');
+    if (!root) return;
+    root.style.containerType = 'inline-size';
+    root.style.width = W[dev] || '100%';
+    if (dev === 'Desktop') {
+      root.style.margin = '0';
+      root.style.boxShadow = 'none';
+      root.style.border = 'none';
+      try { document.body.style.background = 'var(--surf)'; } catch(e){}
+    } else {
+      root.style.margin = '28px auto';
+      root.style.boxShadow = '0 24px 70px rgba(0,0,0,0.16)';
+      root.style.border = '1px solid var(--hair)';
+      try { document.body.style.background = 'var(--surf2)'; } catch(e){}
+    }
+    this.positionNav();
+  }
+
+  positionNav() {
+    const root = document.getElementById('ae-root');
+    const nav = document.querySelector('[data-screen-label]');
+    if (!root || !nav) return;
+    const dev = this.props.device || 'Desktop';
+    if (dev === 'Desktop') {
+      nav.style.left = '50%';
+    } else {
+      const r = root.getBoundingClientRect();
+      nav.style.left = (r.left + r.width / 2) + 'px';
+    }
+  }
+
+  openQuote(division) {
+    this.setState({ quoteOpen:true, submitted:false, errors:{}, form:{ ...this.state.form, division: division || this.state.form.division } });
+    try { document.body.style.overflow='hidden'; } catch(e){}
+  }
+  closeQuote() {
+    this.setState({ quoteOpen:false, errors:{} });
+    try { document.body.style.overflow=''; } catch(e){}
+  }
+  setField(k, v) {
+    this.setState(s => ({ form:{ ...s.form, [k]:v }, errors:{ ...s.errors, [k]:undefined } }));
+  }
+  validate() {
+    const f = this.state.form; const e = {};
+    if (!f.name.trim()) e.name = 'Please enter your name';
+    if (!f.email.trim()) e.email = 'Please enter your email';
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email.trim())) e.email = 'Enter a valid email address';
+    if (!f.details.trim()) e.details = 'Tell us briefly what you need';
+    return e;
+  }
+  submit(ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+    const errors = this.validate();
+    if (Object.keys(errors).length) { this.setState({ errors }); return; }
+    this.setState({ submitted:true, submittedName: this.state.form.name.trim().split(' ')[0] || 'there' });
+  }
+
+  applyThemeMode() {
+    const r = document.getElementById('ae-root');
+    if (r) r.setAttribute('data-theme', this.state.theme === 'dark' ? 'dark' : 'light');
+  }
+
+  componentDidMount() {
+    this.applyTheme();
+    this.applyThemeMode();
+    this.applyDevice();
+    this._navIO = new IntersectionObserver((entries) => {
+      const shown = !entries[0].isIntersecting;
+      if (shown !== this.state.navShown) this.setState({ navShown: shown });
+    }, { threshold: 0 });
+    const trg = document.querySelector('[data-navtrigger]');
+    if (trg) this._navIO.observe(trg);
+    this._onResize = () => this.positionNav();
+    window.addEventListener('resize', this._onResize);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    setTimeout(() => { document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el)); }, 60);
+    this._esc = (e) => { if (e.key === 'Escape' && this.state.quoteOpen) this.closeQuote(); };
+    document.addEventListener('keydown', this._esc);
+    // global cursor dot (eased core + trailing ring)
+    const cur = document.getElementById('ae-cursor');
+    const dot = document.getElementById('ae-fc-dot');
+    const ring = document.getElementById('ae-fc-ring');
+    if (cur && dot && ring) {
+      let tx = 0, ty = 0, dx = 0, dy = 0, rx = 0, ry = 0, gs = 1, primed = false;
+      const tick = () => {
+        dx += (tx - dx) * 0.30; dy += (ty - dy) * 0.30;          // core: tight follow
+        rx += (tx - rx) * 0.12; ry += (ty - ry) * 0.12;          // ring: trails behind
+        const speed = Math.hypot(tx - rx, ty - ry);
+        gs += ((1 + Math.min(speed / 170, 0.55)) - gs) * 0.2;    // speed-reactive stretch
+        dot.style.setProperty('--fx', dx + 'px'); dot.style.setProperty('--fy', dy + 'px');
+        ring.style.setProperty('--gx', rx + 'px'); ring.style.setProperty('--gy', ry + 'px');
+        ring.style.setProperty('--gs', gs.toFixed(3));
+        this._curRaf = requestAnimationFrame(tick);
+      };
+      this._curMove = (e) => {
+        tx = e.clientX; ty = e.clientY;
+        if (!primed) { primed = true; dx = rx = tx; dy = ry = ty; cur.style.opacity = '1'; if (!this._curRaf) tick(); }
+      };
+      this._curLeave = (e) => { if (!e.relatedTarget && !e.toElement) cur.style.opacity = '0'; };
+      this._curEnter = () => { if (primed) cur.style.opacity = '1'; };
+      window.addEventListener('mousemove', this._curMove);
+      document.addEventListener('mouseout', this._curLeave);
+      document.addEventListener('mouseover', this._curEnter);
+    }
+  }
+  componentDidUpdate() {
+    this.applyTheme();
+    this.applyThemeMode();
+    this.applyDevice();
+  }
+  componentWillUnmount() { if (this._esc) document.removeEventListener('keydown', this._esc); if (this._navIO) this._navIO.disconnect(); if (this._onResize) window.removeEventListener('resize', this._onResize); }
+
+  renderVals() {
+    const data = this.divisionData;
+    const ai = this.state.activeDivision;
+    const inputBase = 'width:100%;border:1px solid var(--bd4);border-radius:var(--radius);padding:13px 14px;font-size:14px;color:var(--ink);background:var(--surf2);outline:none';
+    const errInput = 'width:100%;border:1px solid #d8836f;border-radius:var(--radius);padding:13px 14px;font-size:14px;color:var(--ink);background:var(--warm);outline:none';
+    const e = this.state.errors;
+
+    const divisions = data.map((d, i) => ({
+      ...d,
+      cardStyle: i === ai
+        ? 'color:var(--on-solid);text-align:left;cursor:pointer;border:1px solid var(--accent);background:var(--accent);border-radius:var(--radius);padding:28px;transition:all .2s;box-shadow:0 10px 26px rgba(0,0,0,0.12)'
+        : 'color:var(--ink);text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--surf);border-radius:var(--radius);padding:28px;transition:all .2s',
+      dotStyle: i === ai
+        ? 'width:9px;height:9px;border-radius:50%;background:var(--on-solid)'
+        : 'width:9px;height:9px;border-radius:50%;background:var(--hair)',
+      select: () => this.setState({ activeDivision: i })
+    }));
+
+    return {
+      divisions,
+      activeNum: data[ai].num,
+      activeName: data[ai].name,
+      activeLongDesc: data[ai].longDesc,
+      activeImgLabel: data[ai].imgLabel,
+      activeImg: data[ai].img,
+      img0vis: 'opacity:' + (ai === 0 ? '1' : '0'),
+      img1vis: 'opacity:' + (ai === 1 ? '1' : '0'),
+      img2vis: 'opacity:' + (ai === 2 ? '1' : '0'),
+      activeItems: data[ai].items.map(label => ({ label })),
+
+      quoteOpen: this.state.quoteOpen,
+      submitted: this.state.submitted,
+      showForm: !this.state.submitted,
+      submittedName: this.state.submittedName,
+      f: this.state.form,
+      err: e,
+      inputBase,
+      nameStyle: e.name ? errInput : inputBase,
+      emailStyle: e.email ? errInput : inputBase,
+      detailsStyle: (e.details ? errInput : inputBase) + ';resize:vertical;min-height:96px;line-height:1.5',
+
+      isDark: this.state.theme === 'dark',
+      isLight: this.state.theme !== 'dark',
+      navTY: this.state.navShown ? 'translateY(0)' : 'translateY(150%)',
+      navOpacity: this.state.navShown ? '1' : '0',
+      navPE: this.state.navShown ? 'auto' : 'none',
+      themeLabel: this.state.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleTheme: () => {
+        const next = this.state.theme === 'dark' ? 'light' : 'dark';
+        try { localStorage.setItem('ae-theme', next); } catch(e){}
+        this.setState({ theme: next });
+      },
+
+      openGeneral: () => this.openQuote('General inquiry'),
+      openActiveQuote: () => this.openQuote(data[ai].name),
+      closeQuote: () => this.closeQuote(),
+      stop: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); },
+      submit: (ev) => this.submit(ev),
+      setName: (ev) => this.setField('name', ev.target.value),
+      setCompany: (ev) => this.setField('company', ev.target.value),
+      setEmail: (ev) => this.setField('email', ev.target.value),
+      setCountry: (ev) => this.setField('country', ev.target.value),
+      setDivision: (ev) => this.setField('division', ev.target.value),
+      setDetails: (ev) => this.setField('details', ev.target.value)
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{background:#0e0d0b;font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased}
+    @keyframes ndrift{0%{transform:translate(-50%,-50%) scale(1.02)}100%{transform:translate(-50%,-52%) scale(1.06)}}
+    @keyframes nfade{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:none}}
+    @keyframes ndash{to{stroke-dashoffset:-200}}
+    @keyframes npulse{0%,100%{opacity:0.5}50%{opacity:1}}
+    .n-rise{opacity:1}
+    .n-home:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,0.4)}
+    .n-home:hover .n-arrow{transform:translateX(5px)}
+    .n-ghost:hover{border-color:rgba(255,255,255,0.42);color:#fff}
+  </style>
+</helmet>
+<div style="position:relative;min-height:100vh;width:100%;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%, #1a1814, #0e0d0b 60%);color:#f3efe8;display:flex;align-items:center;justify-content:center;padding:40px 24px">
+
+  <img src="assets/worldmap.svg" alt="" aria-hidden="true" style="position:absolute;left:50%;top:50%;width:min(1100px,150%);transform:translate(-50%,-50%) scale(1.02);filter:brightness(0) invert(1);opacity:0.04;animation:ndrift 18s ease-in-out infinite alternate;pointer-events:none">
+
+  <svg viewBox="0 0 1000 600" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.5">
+    <path d="M120,470 Q380,300 520,300 T880,150" fill="none" stroke="#a851d6" stroke-opacity="0.5" stroke-width="1.4" stroke-dasharray="7 10" style="animation:ndash 5s linear infinite"></path>
+    <circle r="3.5" fill="#a851d6"><animateMotion dur="6s" repeatCount="indefinite" path="M120,470 Q380,300 520,300 T880,150"></animateMotion></circle>
+  </svg>
+
+  <div style="position:relative;z-index:2;width:100%;max-width:560px;text-align:center;display:flex;flex-direction:column;align-items:center">
+
+    <div class="n-rise" style="display:flex;align-items:center;gap:12px;margin-bottom:54px">
+      <div style="width:42px;height:42px;border-radius:11px;background:#a851d6;display:flex;align-items:center;justify-content:center;flex:none"><svg viewBox="0 0 290.26 347.48" fill="#fff" style="height:22px;width:auto;display:block"><path d="M7.26,319.95V44.2h8.3c.17-2.01.56-3.99,1.16-5.95.15-.44.27-.87.44-1.31H0v290.26h162.54c-1.98-2.3-4.11-4.72-6.44-7.26H7.26Z"></path><path d="M187.65,44.2h95.35v275.75h-40.65c-1.16,2.4-2.4,4.81-3.68,7.26h51.58V36.95h-114.76c4.09,2.3,8.15,4.72,12.15,7.26Z"></path><path d="M217.63,95.56c-27.46-30.83-63.06-47.17-99.45-64.43C92.69,19.02,75.04,7.23,66.75,1.25c-3.04-2.19-7.27-1.43-9.34,1.69-5.7,8.55-16.05,25.36-21.05,41.41-.84,2.71.14,5.64,2.44,7.31,5.49,4,16.91,11.9,32.87,20.86-25.36,38.94-38.6,120.18,35.59,176.48,68.34,51.87,89.28,88.25,93.9,97.67.5,1.02,1.94,1.08,2.54.11,33.88-54.08,43.54-91.21,45.7-146.48,1.2-30.67-4.3-73.93-31.76-104.76ZM135.32,200.69c-9.69-8.61-19.34-18.28-28.67-29.89-29.14-36.29-31.58-70.91-27.98-91.57,10.09,6.02,37.44,24.45,49.08,53.4,9.87,24.54,10.25,49.61,7.57,68.06ZM218.9,278.07c-20.82-31.78-49.72-48.35-78.75-73.16,15.09-27.2,24.39-55.57,22.61-83.9,7.89,5.79,15.32,12.2,23.01,19.86,23.69,23.63,34.2,58.2,36.76,84.9,1.22,12.75,1.36,35.96-3.62,52.3Z"></path></svg></div>
+      <div style="text-align:left;line-height:1;flex:none"><div style="font-size:16px;font-weight:800;letter-spacing:0.02em;color:#fff;white-space:nowrap">AHNOUD EXPORT</div><div style="font-size:10px;font-weight:600;letter-spacing:0.16em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:5px;white-space:nowrap">Est. 2021 &middot; Dubai</div></div>
+    </div>
+
+    <div class="n-rise" style="font-size:clamp(110px,22vw,210px);font-weight:800;letter-spacing:-0.05em;line-height:0.82;color:#fff;animation-delay:.06s">4<span style="color:#a851d6">0</span>4</div>
+
+    <div class="n-rise" style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#a851d6;margin-top:30px;animation-delay:.12s">Route not found</div>
+
+    <h1 class="n-rise" style="font-size:clamp(26px,5vw,38px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;color:#fff;margin-top:16px;animation-delay:.16s">This shipment took a wrong turn.</h1>
+
+    <p class="n-rise" style="font-size:15.5px;line-height:1.6;color:#aca69c;max-width:420px;margin-top:18px;animation-delay:.22s">The page you&rsquo;re looking for isn&rsquo;t on any of our corridors. Let&rsquo;s get you back to a known port.</p>
+
+    <div class="n-rise" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:38px;animation-delay:.28s">
+      <a href="Ahnoud Export.dc.html" class="n-home" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;color:#1a1a1a;background:#fff;border-radius:8px;padding:15px 28px;text-decoration:none;transition:transform .28s cubic-bezier(.16,1,.3,1),box-shadow .28s ease">Back to home <span class="n-arrow" style="display:inline-block;transition:transform .28s cubic-bezier(.16,1,.3,1)">&rarr;</span></a>
+      <a href="Ahnoud Export.dc.html#contact" class="n-ghost" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;color:#cdc8be;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:15px 28px;text-decoration:none;transition:border-color .2s ease,color .2s ease">Request a quote</a>
+    </div>
+
+    <div class="n-rise" style="display:flex;align-items:center;gap:8px;margin-top:64px;font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6b675f;animation-delay:.34s">
+      <span style="width:6px;height:6px;border-radius:50%;background:#a851d6;animation:npulse 2.2s ease-in-out infinite"></span>
+      Error 404 &middot; Ahnoud Export
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

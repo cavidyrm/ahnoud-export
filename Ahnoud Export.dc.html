@@ -7,6 +7,12 @@
 </head>
 <body>
 <x-dc>
+<!-- ============================================================
+     Ahnoud Export — Marketing landing page
+     Version: 1.0.0  ·  Developer handoff build
+     Single accent token: --accent (#a851d6). Change in :root,
+     in applyTheme() fallback, and the data-props default to retheme.
+     ============================================================ -->
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +21,7 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   :root{
-    --accent:#b06a3f;--font-display:'Helvetica Neue',Helvetica,Arial,sans-serif;--font-body:'Helvetica Neue',Helvetica,Arial,sans-serif;--font-mono:'JetBrains Mono',monospace;--font-ui:'Plus Jakarta Sans',sans-serif;
+    --accent:#a851d6;--font-display:'Helvetica Neue',Helvetica,Arial,sans-serif;--font-body:'Helvetica Neue',Helvetica,Arial,sans-serif;--font-mono:'JetBrains Mono',monospace;--font-ui:'Plus Jakarta Sans',sans-serif;
     --surf:#fff;--surf2:#fafafa;--page:#fff;
     --ink:#1a1a1a;--ink2:#33312d;--ink3:#44413c;--ink4:#55524c;--ink5:#6b675f;
     --mut:#7a766e;--mut2:#8a8780;--mut3:#9a968e;--faint:#b0aca3;
@@ -46,13 +52,11 @@
   section[id], footer[id]{scroll-margin-top:24px}
   @keyframes pulsering{0%{transform:scale(1);opacity:0.55}70%{transform:scale(3.2);opacity:0}100%{opacity:0}}
   @keyframes dashmove{to{stroke-dashoffset:-100}}
-  .navlink{position:relative;color:var(--ink4);transition:color .2s}
   .aenav{font-family:var(--font-ui);font-size:13.5px;font-weight:500;color:#928d83;padding:10px 14px;border-radius:11px;transition:background .15s,color .15s;cursor:pointer}
   .aenav:hover{color:var(--accent);background:rgba(255,255,255,0.07)}
   #ae-root[data-theme="dark"] .aenav:hover{color:color-mix(in oklab, var(--accent) 65%, #ffffff)}
   .ae-worldmap{filter:brightness(0) opacity(0.82)}
   #ae-root[data-theme="dark"] .ae-worldmap{filter:brightness(0) invert(1) opacity(0.9)}
-  .navlink:hover{color:var(--ink)}
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
   .reveal.in{opacity:1;transform:none}
   .flink{color:#d2ccc2;transition:color .2s}
@@ -488,10 +492,13 @@
 
     <div style="position:relative;z-index:1">
       <!-- CTA -->
-      <div style="text-align:center;max-width:780px;margin:0 auto;padding-bottom:88px;border-bottom:1px solid rgba(255,255,255,0.08)">
-        <h2 class="h-cta" style="font-size:64px;font-weight:700;letter-spacing:-0.04em;line-height:0.98;color:#fff;max-width:760px;margin:0 auto">Ready to source with confidence?</h2>
-        <p style="font-size:17px;color:#c4beb4;margin:24px auto 0;max-width:480px;line-height:1.5">Tell us what you need. We&rsquo;ll come back with a quote, an Incoterm and a lead time — not a runaround.</p>
-        <button onClick="{{ openGeneral }}" class="mono ae-btn" style="margin-top:40px;font-size:14px;background:#fff;color:#1a1a1a;border:none;border-radius:var(--radius);padding:18px 40px;cursor:pointer;transition:background .2s" style-hover="margin-top:40px;font-size:14px;background:#f0ece4;color:#1a1a1a;border:none;border-radius:var(--radius);padding:18px 40px;cursor:pointer">Request a quote <span class="ae-arrow">→</span></button>
+      <div onMouseMove="{{ ctaMove }}" onMouseEnter="{{ ctaEnter }}" onMouseLeave="{{ ctaLeave }}" style="position:relative;overflow:hidden;margin:-108px -48px 0;padding:108px 48px 0">
+        <div class="ae-cta-fill" aria-hidden="true" style="position:absolute;left:50%;top:50%;width:1500px;height:1500px;border-radius:50%;transform:translate(-50%,-50%) scale(0);transform-origin:center;transition:transform .6s cubic-bezier(.22,.61,.36,1);background:radial-gradient(circle,rgba(168,81,214,0.34) 0%,rgba(168,81,214,0.13) 38%,rgba(168,81,214,0) 66%);pointer-events:none;z-index:0"></div>
+        <div style="position:relative;z-index:1;text-align:center;max-width:780px;margin:0 auto;padding-bottom:88px;border-bottom:1px solid rgba(255,255,255,0.08)">
+          <h2 class="h-cta" style="font-size:64px;font-weight:700;letter-spacing:-0.04em;line-height:0.98;color:#fff;max-width:760px;margin:0 auto">Ready to source with confidence?</h2>
+          <p style="font-size:17px;color:#c4beb4;margin:24px auto 0;max-width:480px;line-height:1.5">Tell us what you need. We&rsquo;ll come back with a quote, an Incoterm and a lead time — not a runaround.</p>
+          <button onClick="{{ openGeneral }}" class="mono ae-btn" style="margin-top:40px;font-size:14px;background:#fff;color:#1a1a1a;border:none;border-radius:var(--radius);padding:18px 40px;cursor:pointer;transition:background .2s" style-hover="margin-top:40px;font-size:14px;background:#f0ece4;color:#1a1a1a;border:none;border-radius:var(--radius);padding:18px 40px;cursor:pointer">Request a quote <span class="ae-arrow">→</span></button>
+        </div>
       </div>
 
       <!-- top row -->
@@ -681,7 +688,7 @@ class Component extends DCLogic {
   applyTheme() {
     const p = this.fontPairs[this.props.fontPairing] || this.fontPairs['Helvetica · Swiss'];
     const r = document.documentElement.style;
-    r.setProperty('--accent', this.props.accent || '#b06a3f');
+    r.setProperty('--accent', this.props.accent || '#a851d6');
     const cr = this.props.cornerRadius;
     r.setProperty('--radius', ((cr === undefined || cr === null) ? 8 : cr) + 'px');
     r.setProperty('--font-display', p.d);
@@ -860,6 +867,10 @@ class Component extends DCLogic {
         try { localStorage.setItem('ae-theme', next); } catch(e){}
         this.setState({ theme: next });
       },
+
+      ctaMove: (e) => { const w = e.currentTarget, f = w.querySelector('.ae-cta-fill'); if (!f) return; const r = w.getBoundingClientRect(); f.style.left = (e.clientX - r.left) + 'px'; f.style.top = (e.clientY - r.top) + 'px'; },
+      ctaEnter: (e) => { const f = e.currentTarget.querySelector('.ae-cta-fill'); if (f) f.style.transform = 'translate(-50%,-50%) scale(1)'; },
+      ctaLeave: (e) => { const f = e.currentTarget.querySelector('.ae-cta-fill'); if (f) f.style.transform = 'translate(-50%,-50%) scale(0)'; },
 
       openGeneral: () => this.openQuote('General inquiry'),
       openActiveQuote: () => this.openQuote(data[ai].name),
